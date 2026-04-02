@@ -665,9 +665,6 @@ if __name__ == "__main__":
 #    - Categorical: mode or 'Unknown' 
 #    - Time: forward-fill for time series
 # --------------------------------------------------
-# ===============================================================================================================
-# Question 22: Handle missing values intelligently
-# ===============================================================================================================
 
 import pandas as pd
 
@@ -705,7 +702,7 @@ def handle_missing_values(df: pd.DataFrame) -> pd.DataFrame:
         df[col] = df[col].ffill()
 
     return df
-
+'''
 # Example usage
 
 if __name__ == "__main__":
@@ -724,5 +721,8 @@ if __name__ == "__main__":
     print("\nAfter cleaning:")
     print(df.isnull().sum())
 
-    #test comment
-    
+   '''
+
+
+
+
