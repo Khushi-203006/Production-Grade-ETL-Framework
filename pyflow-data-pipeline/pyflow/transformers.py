@@ -188,7 +188,7 @@ def group_and_aggregate(df: pd.DataFrame) -> pd.DataFrame:
     ).reset_index()
 
     return grouped_df
-
+'''
 if __name__ == "__main__":
 
     data = {
@@ -203,3 +203,45 @@ if __name__ == "__main__":
     result = group_and_aggregate(df)
 
     print(result)
+'''
+# --------------------------------------------------
+# Question 27:  Handle date/time: parse multiple formats, extract features (hour, day_of_week, is_weekend, 
+#             is_holiday) 
+# --------------------------------------------------
+
+import pandas as pd
+
+def process_datetime(df: pd.DataFrame, column: str) -> pd.DataFrame:
+    """
+    Parse datetime column and extract useful features.
+
+    Args:
+        df: Input DataFrame
+        column: Date column name
+
+    Returns:
+        DataFrame with new datetime features
+    """
+
+    # Step 1: Convert to datetime (handles multiple formats)
+    df[column] = pd.to_datetime(df[column], errors="coerce")
+
+    # Step 2: Extract features
+    df["hour"] = df[column].dt.hour
+    df["day_of_week"] = df[column].dt.dayofweek
+    df["is_weekend"] = df["day_of_week"].isin([5, 6])
+
+    return df
+
+if __name__ == "__main__":
+
+    data = {
+        "date": ["2024-01-01 10:30:00", "2024-01-02", "March 3, 2024"]
+    }
+
+    df = pd.DataFrame(data)
+
+    df = process_datetime(df, "date")
+
+    print(df)
+    
