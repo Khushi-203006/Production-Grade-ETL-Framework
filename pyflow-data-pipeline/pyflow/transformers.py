@@ -73,7 +73,7 @@ def remove_duplicates(
     print(f"Removed {before - after} duplicate rows")
 
     return df_cleaned
-
+'''
 if __name__ == "__main__":
 
     data = {
@@ -92,4 +92,75 @@ if __name__ == "__main__":
 
     print("\nOriginal Data:\n", df)
     print("\nCleaned Data:\n", cleaned_df)
+'''
+
+# --------------------------------------------------
+# Question 25: Merge 3 DataFrames (trips, weather, holidays) using different join types, validate merge 
+#             quality 
+# --------------------------------------------------
+
+import pandas as pd
+
+def merge_datasets(
+    trips_df: pd.DataFrame,
+    weather_df: pd.DataFrame,
+    holidays_df: pd.DataFrame
+) -> pd.DataFrame:
+    """
+    Merge trips, weather, and holidays data.
+
+    Returns:
+        Merged DataFrame
+    """
+
+    # Step 1: Merge trips + weather
+    merged_df = pd.merge(
+        trips_df,
+        weather_df,
+        on="date",
+        how="left"
+    )
+
+    # Step 2: Merge with holidays
+    merged_df = pd.merge(
+        merged_df,
+        holidays_df,
+        on="date",
+        how="left"
+    )
+
+    return merged_df
+
+def validate_merge(df: pd.DataFrame):
     
+    print("\n🔍 Merge Validation Report")
+
+    # Missing values check
+    print("\nMissing Values:")
+    print(df.isnull().sum())
+
+    # Total rows
+    print("\nTotal Rows:", len(df))
+'''
+if __name__ == "__main__":  
+    trips = pd.DataFrame({
+        "date": ["2024-01-01", "2024-01-02"],
+        "trips": [1000, 1200]
+    })
+
+    weather = pd.DataFrame({
+        "date": ["2024-01-01"],
+        "weather": ["Rainy"]
+    })
+
+    holidays = pd.DataFrame({
+        "date": ["2024-01-01"],
+        "holiday": ["New Year"]
+    })
+
+    merged = merge_datasets(trips, weather, holidays)
+
+    print("\nMerged Data:\n", merged)
+
+    validate_merge(merged)
+ '''
