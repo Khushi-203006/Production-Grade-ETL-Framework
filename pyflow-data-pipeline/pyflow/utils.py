@@ -12,7 +12,7 @@ import time
 
 #decorator to mesure execution time
 def timing_decorator(func):
-
+ 
     def wrapper(*args, **kwargs):
 
         #record start time
@@ -648,7 +648,7 @@ def load_optimized_csv(file_path: str):
     df["store_and_fwd_flag"] = df["store_and_fwd_flag"].astype("category")
 
     return df
-
+'''
 if __name__ == "__main__":
 
     print("\n---- Optimized CSV Loading ----")
@@ -658,3 +658,68 @@ if __name__ == "__main__":
     df = load_optimized_csv(file_path)
 
     print(df.info())  # 🔥 shows memory usage
+'''
+# --------------------------------------------------
+# Question 22 - Handle missing values intelligently: 
+#    - Numeric: mean/median based on distribution 
+#    - Categorical: mode or 'Unknown' 
+#    - Time: forward-fill for time series
+# --------------------------------------------------
+# ===============================================================================================================
+# Question 22: Handle missing values intelligently
+# ===============================================================================================================
+
+import pandas as pd
+
+def handle_missing_values(df: pd.DataFrame) -> pd.DataFrame: 
+
+    # 🔹 Numeric columns
+    numeric_cols = df.select_dtypes(include=["int64", "float64"]).columns # find all numeric columns
+
+    for col in numeric_cols:
+        if df[col].isnull().sum() > 0:
+
+            # Check skewness
+            if df[col].skew() > 1:
+                # skewed → median
+                df[col].fillna(df[col].median(), inplace=True)
+            else:
+                # normal → mean
+                df[col].fillna(df[col].mean(), inplace=True)
+
+    # 🔹 Categorical columns
+    cat_cols = df.select_dtypes(include=["object", "string"]).columns
+
+    for col in cat_cols:
+        if df[col].isnull().sum() > 0:
+            mode = df[col].mode()
+            if not mode.empty:
+                df[col].fillna(mode[0], inplace=True)
+            else:
+                df[col].fillna("Unknown", inplace=True)
+
+    # 🔹 Time columns
+    time_cols = df.select_dtypes(include=["datetime64[ns]"]).columns
+
+    for col in time_cols:
+        df[col] = df[col].ffill()
+
+    return df
+
+# Example usage
+
+if __name__ == "__main__":
+
+    print("\n---- Question 22 ----")
+
+    file_path = "../data/raw/yellow_tripdata_2024-01.parquet"
+
+    df = pd.read_parquet(file_path).head(10000)
+
+    print("Before cleaning:")
+    print(df.isnull().sum())
+
+    df = handle_missing_values(df)
+
+    print("\nAfter cleaning:")
+    print(df.isnull().sum())

@@ -1,0 +1,19 @@
+#1. Create a config parser that reads YAML/JSON config files for ETL settings (file paths, db credentials, chunk size)
+
+#data storeage locations
+file_paths:
+  raw_data: "data/raw/"
+  processed_data: "data/processed/"
+
+#database connection settings
+database:
+  host: localhost
+  user: root
+  password: khushi
+  database: PyFlow
+
+#pipeline configurations
+etl_setting:
+  chunck_size: 1000000
+  log_files: logs/pipeline.log
+

@@ -1,0 +1,33 @@
+# Data files
+data/raw/
+*.csv
+*.parquet
+*.zip
+*.xlsx
+
+# Database
+*.db
+
+# Logs
+*.log
+*.txt
+
+# Python cache
+__pycache__/
+*.pyc# Data files 
+data/raw/ 
+*.csv 
+*.parquet 
+*.zip 
+*.xlsx 
+ 
+# Database 
+*.db 
+ 
+# Logs 
+*.log 
+*.txt 
+ 
+# Python cache 
+__pycache__/ 
+*.pyc 
