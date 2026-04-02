@@ -164,3 +164,42 @@ if __name__ == "__main__":
 
     validate_merge(merged)
  '''
+
+# --------------------------------------------------
+# Question 26: Group by multiple columns & aggregate with custom functions
+# --------------------------------------------------
+
+import pandas as pd
+
+def group_and_aggregate(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Group data by date, hour, borough and perform aggregations.
+    
+    Returns:
+        Aggregated DataFrame
+    """
+
+    grouped_df = df.groupby(
+        ["date", "hour", "borough"]
+    ).agg(
+        total_fare=("fare_amount", "sum"),
+        avg_fare=("fare_amount", "mean"),
+        trip_count=("fare_amount", "count")
+    ).reset_index()
+
+    return grouped_df
+
+if __name__ == "__main__":
+
+    data = {
+        "date": ["2024-01-01", "2024-01-01", "2024-01-01"],
+        "hour": [10, 10, 11],
+        "borough": ["A", "A", "B"],
+        "fare_amount": [100, 150, 200]
+    }
+
+    df = pd.DataFrame(data)
+
+    result = group_and_aggregate(df)
+
+    print(result)
