@@ -38,3 +38,58 @@ if __name__ == "__main__":
     print("Original Data:\n", df)
     print("\nCleaned Data:\n", cleaned_df)
 '''
+
+# --------------------------------------------------
+# Question 24: Remove duplicates based on business keys (trip_start_time + pickup_location + 
+#              dropoff_location)
+# --------------------------------------------------
+
+import pandas as pd
+
+def remove_duplicates(
+    df: pd.DataFrame,
+    subset_cols: list
+) -> pd.DataFrame:
+    """
+    Remove duplicate records based on business keys.
+
+    Args:
+        df: Input DataFrame
+        subset_cols: Columns to consider for duplicate detection
+
+    Returns:
+        DataFrame with duplicates removed
+    """
+
+    # Step 1: Count duplicates (for logging/debugging)
+    before = len(df)
+
+    # Step 2: Remove duplicates
+    df_cleaned = df.drop_duplicates(subset=subset_cols, keep="first")
+
+    # Step 3: Count after cleaning
+    after = len(df_cleaned)
+
+    print(f"Removed {before - after} duplicate rows")
+
+    return df_cleaned
+
+if __name__ == "__main__":
+
+    data = {
+        "trip_start_time": ["10:00", "10:00", "11:00"],
+        "pickup_location": ["A", "A", "A"],
+        "dropoff_location": ["B", "B", "C"],
+        "fare_amount": [100, 100, 150]
+    }
+
+    df = pd.DataFrame(data)
+
+    cleaned_df = remove_duplicates(
+        df,
+        ["trip_start_time", "pickup_location", "dropoff_location"]
+    )
+
+    print("\nOriginal Data:\n", df)
+    print("\nCleaned Data:\n", cleaned_df)
+    
