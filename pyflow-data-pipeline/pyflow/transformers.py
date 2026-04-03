@@ -383,3 +383,100 @@ if __name__ == "__main__":
     export_data(df)
 '''
 
+# --------------------------------------------------
+# Question 32:  Transform Module: Create `transformer.py` with data cleaning, validation, and enrichment 
+#               functions 
+# --------------------------------------------------
+
+import pandas as pd
+
+def handle_missing_values(df: pd.DataFrame) -> pd.DataFrame:
+    numeric_cols = df.select_dtypes(include=["int64", "float64"]).columns
+    categorical_cols = df.select_dtypes(include=["object"]).columns
+
+    for col in numeric_cols:
+        if df[col].isnull().sum() > 0:
+            if df[col].skew() > 1:
+                df[col].fillna(df[col].median(), inplace=True)
+            else:
+                df[col].fillna(df[col].mean(), inplace=True)
+
+    for col in categorical_cols:
+        df[col].fillna("Unknown", inplace=True)
+
+    return df
+
+
+def handle_outliers_iqr(df: pd.DataFrame, column: str) -> pd.DataFrame:
+    Q1 = df[column].quantile(0.25)
+    Q3 = df[column].quantile(0.75)
+    IQR = Q3 - Q1
+
+    lower = Q1 - 1.5 * IQR
+    upper = Q3 + 1.5 * IQR
+
+    df[column] = df[column].clip(lower, upper)
+
+    return df
+
+
+def remove_duplicates(df: pd.DataFrame, subset_cols: list) -> pd.DataFrame:
+    return df.drop_duplicates(subset=subset_cols)
+
+
+def process_datetime(df: pd.DataFrame, column: str) -> pd.DataFrame:
+    df[column] = pd.to_datetime(df[column], errors="coerce")
+    df["hour"] = df[column].dt.hour
+    df["day_of_week"] = df[column].dt.dayofweek
+    df["is_weekend"] = df["day_of_week"].isin([5, 6])
+    return df
+
+def transform_data(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Full transformation pipeline:
+    Cleaning + Validation + Enrichment
+    """
+
+    print("\n🔄 Starting Data Transformation...")
+
+    # Step 1: Handle missing values
+    df = handle_missing_values(df)
+
+    # Step 2: Handle outliers
+    if "fare_amount" in df.columns:
+        df = handle_outliers_iqr(df, "fare_amount")
+
+    # Step 3: Remove duplicates
+    df = remove_duplicates(
+        df,
+        ["date", "pickup_location", "dropoff_location"]
+        if all(col in df.columns for col in ["date", "pickup_location", "dropoff_location"])
+        else df.columns.tolist()
+    )
+
+    # Step 4: Process datetime
+    if "date" in df.columns:
+        df = process_datetime(df, "date")
+
+    print("✅ Transformation Completed!")
+
+    return df
+
+
+# usage example
+if __name__ == "__main__":
+
+    data = {
+        "date": ["2024-01-01", "2024-01-01", None],
+        "fare_amount": [100, 5000, None],
+        "pickup_location": ["A", "A", "B"],
+        "dropoff_location": ["X", "X", "Y"]
+    }
+
+    df = pd.DataFrame(data)
+
+    print("\n🔹 Original Data:\n", df)
+
+    transformed_df = transform_data(df)
+
+    print("\n🔹 Transformed Data:\n", transformed_df)
