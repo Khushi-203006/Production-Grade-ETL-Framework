@@ -271,7 +271,7 @@ def rolling_avg_trip_count(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     return df
-
+'''
 # usage example
 if __name__ == "__main__":
 
@@ -290,5 +290,50 @@ if __name__ == "__main__":
     result = rolling_avg_trip_count(df)
 
     print("\nFinal Output:\n", result)
+'''
+
+# --------------------------------------------------
+# Question 29: Complex Filtering using .query()
+# --------------------------------------------------
+import pandas as pd
+
+def filter_rush_hour_trips(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Filter trips during rush hours on weekdays with fare > 20.
+    """
+
+    # Ensure datetime
+    df["date"] = pd.to_datetime(df["date"])
+
+    # Extract required columns
+    df["hour"] = df["date"].dt.hour
+    df["day_of_week"] = df["date"].dt.dayofweek  # 0=Mon, 6=Sun
+
+    # Apply query
+    filtered_df = df.query(
+        "(hour >= 7 and hour <= 10 or hour >= 17 and hour <= 20) "
+        "and day_of_week < 5 "
+        "and fare_amount > 20"
+    )
+
+    return filtered_df
 
 
+# usage example
+if __name__ == "__main__":
+
+    data = {
+        "date": [
+            "2024-01-01 08:00:00",  # weekday + rush ✔
+            "2024-01-01 14:00:00",  # not rush ❌
+            "2024-01-06 09:00:00",  # weekend ❌
+            "2024-01-02 18:00:00",  # rush ✔
+        ],
+        "fare_amount": [50, 30, 100, 10]  # last one low fare ❌
+    }
+
+    df = pd.DataFrame(data)
+
+    result = filter_rush_hour_trips(df)
+
+    print("\nFiltered Data:\n", result)
