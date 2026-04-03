@@ -232,7 +232,7 @@ def process_datetime(df: pd.DataFrame, column: str) -> pd.DataFrame:
     df["is_weekend"] = df["day_of_week"].isin([5, 6])
 
     return df
-
+'''
 if __name__ == "__main__":
 
     data = {
@@ -244,4 +244,51 @@ if __name__ == "__main__":
     df = process_datetime(df, "date")
 
     print(df)
-    
+'''    
+
+# --------------------------------------------------
+# Question 28:  7-day Rolling Average of Trip Count by Location
+# --------------------------------------------------
+import pandas as pd
+
+def rolling_avg_trip_count(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Calculate 7-day rolling average of trip count by location (borough).
+    """
+
+    # Step 1: Convert date column to datetime
+    df["date"] = pd.to_datetime(df["date"])
+
+    # Step 2: Sort data (VERY IMPORTANT for rolling)
+    df = df.sort_values(by=["borough", "date"])
+
+    # Step 3: Apply rolling window
+    df["rolling_avg"] = (
+        df.groupby("borough")["trip_count"]
+        .rolling(window=7, min_periods=1)
+        .mean()
+        .reset_index(level=0, drop=True)
+    )
+
+    return df
+
+# usage example
+if __name__ == "__main__":
+
+    data = {
+        "date": [
+            "2024-01-01", "2024-01-02", "2024-01-03",
+            "2024-01-04", "2024-01-05", "2024-01-06",
+            "2024-01-07"
+        ],
+        "borough": ["A", "A", "A", "A", "A", "A", "A"],
+        "trip_count": [100, 120, 130, 140, 150, 160, 170]
+    }
+
+    df = pd.DataFrame(data)
+
+    result = rolling_avg_trip_count(df)
+
+    print("\nFinal Output:\n", result)
+
+
