@@ -367,7 +367,7 @@ def export_data(df: pd.DataFrame, output_dir: str = "output"):
 
     print("\n✅ Data exported successfully to all formats!")
 
-
+'''
 # usage example
 if __name__ == "__main__":
 
@@ -381,3 +381,4 @@ if __name__ == "__main__":
     df = pd.DataFrame(data)
 
     export_data(df)
+'''
