@@ -318,7 +318,7 @@ def filter_rush_hour_trips(df: pd.DataFrame) -> pd.DataFrame:
 
     return filtered_df
 
-
+'''
 # usage example
 if __name__ == "__main__":
 
@@ -337,3 +337,47 @@ if __name__ == "__main__":
     result = filter_rush_hour_trips(df)
 
     print("\nFiltered Data:\n", result)
+'''    
+
+# --------------------------------------------------
+# Q30: Export Data to Multiple Formats
+# --------------------------------------------------
+import pandas as pd
+import os
+
+def export_data(df: pd.DataFrame, output_dir: str = "output"):
+    """
+    Export DataFrame to CSV, JSON, Parquet, and Excel with compression.
+    """
+
+    # Step 1: Create output directory if not exists
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Step 2: Export CSV (compressed)
+    df.to_csv(f"{output_dir}/data.csv.gz", index=False, compression="gzip")
+
+    # Step 3: Export JSON (compressed)
+    df.to_json(f"{output_dir}/data.json.gz", orient="records", lines=True, compression="gzip")
+
+    # Step 4: Export Parquet (efficient format)
+    df.to_parquet(f"{output_dir}/data.parquet", index=False)
+
+    # Step 5: Export Excel
+    df.to_excel(f"{output_dir}/data.xlsx", index=False)
+
+    print("\n✅ Data exported successfully to all formats!")
+
+
+# usage example
+if __name__ == "__main__":
+
+    data = {
+        "date": ["2024-01-01", "2024-01-02"],
+        "borough": ["A", "B"],
+        "trip_count": [100, 200],
+        "fare_amount": [50, 80]
+    }
+
+    df = pd.DataFrame(data)
+
+    export_data(df)
