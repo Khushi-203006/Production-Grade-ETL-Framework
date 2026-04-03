@@ -80,7 +80,7 @@ class ParquetExtractor(BaseExtractor):
         print(f"📂 Reading Parquet file: {file_path}")
         return pd.read_parquet(file_path)
 
-
+'''
 # usage example
 if __name__ == "__main__":
 
@@ -109,3 +109,4 @@ if __name__ == "__main__":
         print("\nParquet Data:\n", df_parquet.head())
     except Exception as e:
         print("Parquet Error:", e)
+'''
