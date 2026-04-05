@@ -1,5 +1,5 @@
 # --------------------------------------------------
-# Question 32:  Create `loader.py` to load data to PostgreSQL/MySQL with batch inserts 
+# Question 33:  Create `loader.py` to load data to PostgreSQL/MySQL with batch inserts 
 # (1000 rows/batch) 
 # --------------------------------------------------
 
@@ -20,7 +20,7 @@ class SQLiteLoader(BaseLoader):
         self.db_path = db_path
 
     def load(self, df: pd.DataFrame, table_name: str):
-        print(f"📥 Loading data into table: {table_name}")
+        print(f" Loading data into table: {table_name}")
 
         conn = sqlite3.connect(self.db_path)
 
@@ -34,7 +34,7 @@ class SQLiteLoader(BaseLoader):
 
         conn.close()
 
-        print("✅ Data loaded successfully!")
+        print("Data loaded successfully!")
 
 # usage example
 if __name__ == "__main__":
@@ -52,5 +52,5 @@ if __name__ == "__main__":
 
     loader.load(df, "trips")
 
-    print("\n🔍 Data saved in test.db (table: trips)")
+    print("\n Data saved in test.db (table: trips)")
 

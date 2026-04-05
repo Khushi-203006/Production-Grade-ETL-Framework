@@ -1,0 +1,5 @@
+{
+    "file_path": "data/raw/yellow_tripdata_2024-01.csv",
+    "db_path": "my_database.db",
+    "table_name": "trips"
+}

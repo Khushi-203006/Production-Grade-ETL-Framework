@@ -50,3 +50,11 @@ if __name__ == "__main__":
 
     # print the configuration
     print(config)
+
+import json
+
+
+def load_config(config_path: str = "config/config.json"):
+    with open(config_path, "r") as file:
+        config = json.load(file)
+    return config
