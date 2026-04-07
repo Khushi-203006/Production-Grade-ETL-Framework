@@ -1,3 +1,13 @@
+print ("""
+#####      ##########       ##                 
+#              ##           ##
+#####          ##           ##
+#              ##           ##  
+#####    #     ##      #    ######    
+
+""")
+
+
 import argparse
 from pyflow.extractors import CSVExtractor
 from pyflow.transformers import transform_data
