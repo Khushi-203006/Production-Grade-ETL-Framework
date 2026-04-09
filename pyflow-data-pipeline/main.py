@@ -16,7 +16,6 @@ from pyflow.logger import setup_logger
 from pyflow.config_parser import load_config
 import pandas as pd
 
-
 def run_pipeline(config_path):
 
     logger = setup_logger()
